@@ -1,5 +1,6 @@
 from typing import TypeVar, Generic
 
+
 __all__ = ("Node", "Graph")
 
 
@@ -31,8 +32,30 @@ class Graph:
     def __init__(self, root: Node) -> None:
         self._root = root
 
-    def dfs(self) -> list[Node]:
-        raise NotImplementedError
+    def dfs(self, visited=None) -> list[Node]:
+        if visited is None:
+            visited = []
+        visited.append(self._root)
+        if not self._root.outbound:
+            return visited
+        for node in self._root.outbound:
+            if node not in visited:
+                g = Graph(node)
+                g.dfs(visited)
+
+        return visited
 
     def bfs(self) -> list[Node]:
-        raise NotImplementedError
+        if not self._root.outbound:
+            return [self._root]
+        queue = [self._root]
+        visited = [self._root]
+        while queue:
+            if queue[0].outbound:
+                for node in queue[0].outbound:
+                    if node not in queue and node not in visited:
+                        queue.append(node)
+                        visited.append(node)
+            queue.pop(0)
+
+        return visited

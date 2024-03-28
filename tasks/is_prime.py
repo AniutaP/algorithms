@@ -1,3 +1,6 @@
+import math
+
+
 __all__ = ("is_prime",)
 
 
@@ -12,4 +15,10 @@ def is_prime(number: int) -> bool:
         >> is_prime(4):
         True
     """
-    raise NotImplementedError
+    if number < 2:
+        return False
+    div = round(math.sqrt(number))
+    for i in range(2, div + 1):
+        if number % i == 0:
+            return False
+    return True
