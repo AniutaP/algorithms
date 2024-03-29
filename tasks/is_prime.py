@@ -17,7 +17,7 @@ def is_prime(number: int) -> bool:
     """
     if number < 2:
         return False
-    div = round(math.sqrt(number))
+    div = int(number ** 0.5)
     for i in range(2, div + 1):
         if number % i == 0:
             return False

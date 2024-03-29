@@ -10,7 +10,7 @@ def even_odd(numbers: list[int]) -> float:
         0.6667
     """
     even_numbers = sum(filter(lambda x: x % 2 == 0, numbers))
-    odd_numbers = sum(filter(lambda x: x % 2 != 0, numbers))
+    odd_numbers = sum(x for x in numbers if x % 2 != 0)
     if not odd_numbers:
         return 0
     return even_numbers / odd_numbers
