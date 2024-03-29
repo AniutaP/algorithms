@@ -32,16 +32,18 @@ class Graph:
     def __init__(self, root: Node) -> None:
         self._root = root
 
-    def dfs(self, visited=None) -> list[Node]:
-        if visited is None:
-            visited = []
-        visited.append(self._root)
-        if not self._root.outbound:
-            return visited
-        for node in self._root.outbound:
-            if node not in visited:
-                g = Graph(node)
-                g.dfs(visited)
+    def dfs(self) -> list[Node]:
+        visited = []
+
+        def inner(node):
+            visited.append(node)
+            if not node.outbound:
+                return visited
+            for bound_node in node.outbound:
+                if bound_node not in visited:
+                    inner(bound_node)
+
+        inner(self._root)
 
         return visited
 
