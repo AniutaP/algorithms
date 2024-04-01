@@ -35,13 +35,15 @@ class Graph:
 
     def dfs(self) -> list[Node]:
         visited = []
+        check_visited = set()
 
         def inner(node):
             visited.append(node)
+            check_visited.add(node)
             if not node.outbound:
                 return visited
             for bound_node in node.outbound:
-                if bound_node not in visited:
+                if bound_node not in check_visited:
                     inner(bound_node)
 
         inner(self._root)
@@ -52,12 +54,14 @@ class Graph:
         nodes_queue = queue.Queue()
         nodes_queue.put(self._root)
         visited = [self._root]
+        check_visited = {self._root}
         while not nodes_queue.empty():
             current_node = nodes_queue.get()
             if current_node.outbound:
                 for node in current_node.outbound:
-                    if node not in visited:
+                    if node not in check_visited:
                         nodes_queue.put(node)
                         visited.append(node)
+                        check_visited.add(node)
 
         return visited
