@@ -1,4 +1,5 @@
 from typing import TypeVar, Generic
+import queue
 
 
 __all__ = ("Node", "Graph")
@@ -48,16 +49,15 @@ class Graph:
         return visited
 
     def bfs(self) -> list[Node]:
-        if not self._root.outbound:
-            return [self._root]
-        queue = [self._root]
+        nodes_queue = queue.Queue()
+        nodes_queue.put(self._root)
         visited = [self._root]
-        while queue:
-            if queue[0].outbound:
-                for node in queue[0].outbound:
-                    if node not in queue and node not in visited:
-                        queue.append(node)
+        while not nodes_queue.empty():
+            current_node = nodes_queue.get()
+            if current_node.outbound:
+                for node in current_node.outbound:
+                    if node not in visited:
+                        nodes_queue.put(node)
                         visited.append(node)
-            queue.pop(0)
 
         return visited
